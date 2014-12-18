@@ -1,17 +1,24 @@
 require 'sinatra'
 require 'haml'
 
-
 post '/message' do
-  # filename = filename(params['Body'])
-  # text = File.read("lyrics/#{filename}")
+  if menu_options.include?(params['Body'])
+    file = filename(params['Body'])
+    text = File.read("lyrics/#{file}")
+  else
+    text = menu_text
+  end
 
   content_type 'text/xml'
-  twiml(menu)
+  twiml(text)
 end
 
-def song_options
-  (1..SONGS.size).collect { |i| i.to_s }
+def menu_options
+  (1..filenames.size).collect { |i| i.to_s }
+end
+
+def filename(input)
+  filenames[input.to_i - 1]
 end
 
 def filenames
@@ -20,17 +27,17 @@ def filenames
   names
 end
 
-def menu
+def song_name(filename)
+  filename.gsub(/\-/, ' ').gsub('.txt', '')
+end
+
+def menu_text
   string = "Reply with the song number you'd like:"
   filenames.each_with_index do |filename, i|
     name = song_name(filename)
     string << "\n#{i + 1} #{name}"
   end
   string
-end
-
-def song_name(filename)
-  filename.gsub(/\-/, ' ').gsub('.txt', '')
 end
 
 def twiml(text)
