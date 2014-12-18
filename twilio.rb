@@ -1,9 +1,9 @@
 require 'sinatra'
 
 def filenames
-  names = Dir.entries('lyrics').sort
+  names = Dir.entries('lyrics')
   names.delete_if { |name| name[0] == '.' }
-  names
+  names.sort
 end
 
 def song_name(filename)
