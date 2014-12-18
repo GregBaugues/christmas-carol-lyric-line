@@ -1,0 +1,19 @@
+Text back the number of the carol you'd like: 
+1 Away in a Manger
+2 Do you hear what I hear? 
+3 Frosty the Snowman
+4 Hark the Harald
+5 Have Yourself a Merry Little Christmas
+6 Here Comes Santa Claus
+7 It Came Upon the Midnight Clear
+8 Jingle Bells
+9 Joy to the World
+10 Let it Snow
+11 Little Drummer Boy
+12 O Christmas Tree
+13 O Come All Ye Faithful
+14 Rudolph the Red Nosed Reindeer
+15 Silent Night
+16 Silver Bells
+17 The First Noel
+18 Winter Wonderland
