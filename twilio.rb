@@ -22,21 +22,19 @@ SONGS = %w{
   winter-wonderland.txt }
 
 post '/message' do
-  puts song_options
-  if song_options.include?(params['Body'])
-    option = params['Body'].to_i - 1
-    filename = SONGS[option]
-  else
-    filename = 'menu.txt'
-  end
-
+  filename = filename(params['Body'])
   text = File.read("lyrics/#{filename}")
+
   content_type 'text/xml'
   twiml(text)
 end
 
 def song_options
   (1..SONGS.size).collect { |i| i.to_s }
+end
+
+def filename(input)
+  song_options.include?(input) ? SONGS[input.to_i - 1] : 'menu.txt'
 end
 
 def twiml(text)
