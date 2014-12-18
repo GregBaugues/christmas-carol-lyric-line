@@ -4,13 +4,13 @@ require 'haml'
 post '/message' do
   if menu_options.include?(params['Body'])
     file = filename(params['Body'])
-    text = File.read("lyrics/#{file}")
+    message = File.read("lyrics/#{file}")
   else
-    text = menu_text
+    message = menu_text
   end
 
   content_type 'text/xml'
-  twiml(text)
+  twiml(message)
 end
 
 def menu_options
@@ -40,11 +40,11 @@ def menu_text
   string
 end
 
-def twiml(text)
+def twiml(message)
   %Q{
   <Response>
     <Message>
-      #{text}
+      #{message}
     </Message>
   </Response> }
 end
