@@ -1,27 +1,7 @@
 require 'sinatra'
 
-post '/message' do
-  if menu_options.include?(params['Body'])
-    file = filename(params['Body'])
-    message = File.read("lyrics/#{file}")
-  else
-    message = menu_text
-  end
-
-  content_type 'text/xml'
-  twiml(message)
-end
-
-def menu_options
-  (1..filenames.size).collect { |i| i.to_s }
-end
-
-def filename(input)
-  filenames[input.to_i - 1]
-end
-
 def filenames
-  names = Dir.entries('lyrics')
+  names = Dir.entries('lyrics').sort
   names.delete_if { |name| name[0] == '.' }
   names
 end
@@ -38,12 +18,36 @@ def menu_text
   string
 end
 
+def valid_options
+  (1..filenames.size).collect { |i| i.to_s }
+end
+
+def filename(input)
+  filenames[input.to_i - 1]
+end
+
+def lyrics(filename)
+  File.read("lyrics/#{filename}")
+end
+
+post '/message' do
+  if valid_options.include?(params['Body'])
+    message = lyrics(filename(params['Body']))
+  else
+    message = menu_text
+  end
+
+  content_type 'text/xml'
+  twiml(message)
+end
+
 def twiml(message)
   %Q{
-  <Response>
-    <Message>
-      #{message}
-    </Message>
-  </Response> }
+<Response>
+  <Message>
+    #{message}
+    \n--\nPowered by Twilio.com
+  </Message>
+</Response> }
 end
 
