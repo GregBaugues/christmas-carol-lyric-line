@@ -1,5 +1,4 @@
 require 'sinatra'
-require 'haml'
 
 post '/message' do
   if menu_options.include?(params['Body'])
@@ -34,8 +33,7 @@ end
 def menu_text
   string = "Reply with the song number you'd like:"
   filenames.each_with_index do |filename, i|
-    name = song_name(filename)
-    string << "\n#{i + 1} #{name}"
+    string << "\n#{i + 1} #{song_name(filename)}"
   end
   string
 end
