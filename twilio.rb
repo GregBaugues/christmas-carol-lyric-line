@@ -1,40 +1,36 @@
 require 'sinatra'
 require 'haml'
 
-SONGS = %w{
-  away-in-a-manger.txt
-  do-you-hear-what-i-hear.txt
-  frosty-the-snowman.txt
-  hark-the-harald-angels-sing.txt
-  have-yourself-a-merry-little-christmas.txt
-  here-comes-santa-claus.txt
-  it-came-upon-the-midnight-clear.txt
-  jingle-bells.txt
-  joy-to-the-world.txt
-  let-it-snow.txt
-  little-drummer-boy.txt
-  o-christmas-tree.txt
-  o-come-all-ye-faithful.txt
-  rudolph-the-red-nosed-reindeer.txt
-  silent-night.txt
-  silver-bells.txt
-  the-first-noel.txt
-  winter-wonderland.txt }
 
 post '/message' do
-  filename = filename(params['Body'])
-  text = File.read("lyrics/#{filename}")
+  # filename = filename(params['Body'])
+  # text = File.read("lyrics/#{filename}")
 
   content_type 'text/xml'
-  twiml(text)
+  twiml(menu)
 end
 
 def song_options
   (1..SONGS.size).collect { |i| i.to_s }
 end
 
-def filename(input)
-  song_options.include?(input) ? SONGS[input.to_i - 1] : 'menu.txt'
+def filenames
+  names = Dir.entries('lyrics')
+  names.delete_if { |name| name[0] == '.' }
+  names
+end
+
+def menu
+  string = "Reply with the song number you'd like:"
+  filenames.each_with_index do |filename, i|
+    name = song_name(filename)
+    string << "\n#{i + 1} #{name}"
+  end
+  string
+end
+
+def song_name(filename)
+  filename.gsub(/\-/, ' ').gsub('.txt', '')
 end
 
 def twiml(text)
