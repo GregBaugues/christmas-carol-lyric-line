@@ -32,16 +32,19 @@ post '/message' do
 
   text = File.read("lyrics/#{filename}")
   content_type 'text/xml'
-  "
-<Response>
-  <Message>
-    #{text}
-  </Message>
-</Response>"
+  twiml(text)
 end
 
 def song_options
   (1..SONGS.size).collect { |i| i.to_s }
 end
 
+def twiml(text)
+  %Q{
+  <Response>
+    <Message>
+      #{text}
+    </Message>
+  </Response> }
+end
 
