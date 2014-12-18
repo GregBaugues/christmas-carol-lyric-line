@@ -11,7 +11,7 @@ def song_name(filename)
 end
 
 def menu_text
-  string = "Reply with the song number you'd like:"
+  string = "Welcome to the Christmas Carol Lyric Line!\n\nWhat song number would you like lyrics for?"
   filenames.each_with_index do |filename, i|
     string << "\n#{i + 1} #{song_name(filename)}"
   end
